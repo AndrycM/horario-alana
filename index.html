@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Horarios por Materia</title>
+
+<style>
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    background:#ffffff;
+    margin:0;
+    padding:0;
+}
+
+header{
+    background:#ff69b4;
+    color:white;
+    padding:20px;
+    text-align:center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+header h1{
+    margin: 0;
+    margin-right: 20px;
+}
+
+header img{
+    max-height: 80px;
+    border-radius: 10px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    padding:30px;
+    text-align:center;
+}
+
+select,input{
+    padding:10px;
+    font-size:16px;
+    margin:10px;
+    width:260px;
+}
+
+.card{
+    margin-top:30px;
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 4px 10px rgba(255,105,180,0.2);
+}
+
+img{
+    max-width:100%;
+    border-radius:10px;
+    margin-top:15px;
+}
+
+.hidden{
+    display:none;
+}
+
+footer{
+    margin-top:40px;
+    padding:15px;
+    text-align:center;
+    font-size:14px;
+    color:#666;
+    background:#f0f0f0;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<img src="usagi.jpg" alt="Usagi">
+<h1>     Horarios de BolitaPro</h1>
+</header>
+
+<div class="container">
+
+<input type="text" id="busqueda" placeholder="Buscar materia..." onkeyup="filtrarMaterias()">
+
+<br>
+
+<select id="materia" onchange="mostrarHorario()">
+<option value="">-- Seleccionar materia --</option>
+<option value="fisica_electro">Física Electro</option>
+<option value="ecuaciones_diferenciales">Ecuaciones Diferenciales</option>
+<option value="estadistica">Estadística</option>
+<option value="legislacion_laboral">Legislación Laboral</option>
+<option value="teoria_diseno">Teoría y Diseño</option>
+<option value="resistencia_materiales">Resistencia de Materiales</option>
+</select>
+
+<div class="card hidden" id="resultado">
+<h2 id="tituloMateria"></h2>
+<div id="contenedorImagenes"></div>
+</div>
+
+</div>
+
+<footer>
+Sistema simple de horarios académicos
+</footer>
+
+<script>
+
+const horarios = {
+
+    fisica_electro:{
+        nombre:"Física Electro",
+        imagen:["electro1.jpeg","electro2.jpeg"]
+    },
+
+    ecuaciones_diferenciales:{
+        nombre:"Ecuaciones Diferenciales",
+        imagen:["ecuaciones1.jpeg","ecuaciones2.jpeg"]
+    },
+
+    estadistica:{
+        nombre:"Estadística",
+        imagen:"estadistica.jpeg"
+    },
+
+    legislacion_laboral:{
+        nombre:"Legislación Laboral",
+        imagen:["legis1.jpeg","legis2.jpeg"]
+    },
+
+    teoria_diseno:{
+        nombre:"Teoría y Diseño",
+        imagen:"teoria.jpeg"
+    },
+
+    resistencia_materiales:{
+        nombre:"Resistencia de Materiales",
+        imagen:["resistencia1.jpeg","resistencia2.jpeg"]
+    }
+
+}
+
+function mostrarHorario(){
+
+let materia = document.getElementById("materia").value
+
+if(materia === ""){
+    document.getElementById("resultado").classList.add("hidden")
+    return
+}
+
+let data = horarios[materia]
+
+document.getElementById("tituloMateria").innerText = data.nombre
+
+let contenedor = document.getElementById("contenedorImagenes")
+contenedor.innerHTML = "" // Limpiar imágenes anteriores
+
+if(Array.isArray(data.imagen)){
+    data.imagen.forEach(function(imgSrc){
+        let img = document.createElement("img")
+        img.src = imgSrc
+        img.style.maxWidth = "100%"
+        img.style.borderRadius = "10px"
+        img.style.marginTop = "15px"
+        contenedor.appendChild(img)
+    })
+} else {
+    let img = document.createElement("img")
+    img.src = data.imagen
+    img.style.maxWidth = "100%"
+    img.style.borderRadius = "10px"
+    img.style.marginTop = "15px"
+    contenedor.appendChild(img)
+}
+
+document.getElementById("resultado").classList.remove("hidden")
+
+}
+
+function filtrarMaterias(){
+
+let input = document.getElementById("busqueda").value.toLowerCase()
+let select = document.getElementById("materia")
+let options = select.options
+
+for(let i=0;i<options.length;i++){
+
+let texto = options[i].text.toLowerCase()
+
+if(texto.includes(input) || options[i].value === ""){
+options[i].style.display = ""
+}else{
+options[i].style.display = "none"
+}
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
